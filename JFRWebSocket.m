@@ -67,7 +67,7 @@ typedef NS_ENUM(NSUInteger, JFRInternalErrorCode) {
 @property(nonatomic, assign)BOOL isCreated;
 @property(nonatomic, assign)BOOL didDisconnect;
 @property(nonatomic, assign)BOOL certValidated;
-
+@property(nonatomic, nullable) SecIdentityRef identityRef;
 @end
 
 //Constant Header Values.
@@ -113,7 +113,7 @@ static const size_t  JFRMaxFrameSize        = 32;
         self.inputQueue = [NSMutableArray new];
         self.optProtocols = protocols;
     }
-    
+
     return self;
 }
 /////////////////////////////////////////////////////////////////////////////
@@ -122,7 +122,7 @@ static const size_t  JFRMaxFrameSize        = 32;
     if(self.isCreated) {
         return;
     }
-    
+
     __weak typeof(self) weakSelf = self;
     dispatch_async(self.queue, ^{
         weakSelf.didDisconnect = NO;
@@ -170,13 +170,13 @@ static const size_t  JFRMaxFrameSize        = 32;
 - (NSString *)origin;
 {
     NSString *scheme = [_url.scheme lowercaseString];
-    
+
     if ([scheme isEqualToString:@"wss"]) {
         scheme = @"https";
     } else if ([scheme isEqualToString:@"ws"]) {
         scheme = @"http";
     }
-    
+
     if (_url.port) {
         return [NSString stringWithFormat:@"%@://%@:%@/", scheme, _url.host, _url.port];
     } else {
@@ -194,7 +194,7 @@ static const size_t  JFRMaxFrameSize        = 32;
                                                              url,
                                                              kCFHTTPVersion1_1);
     CFRelease(url);
-    
+
     NSNumber *port = _url.port;
     if (!port) {
         if([self.url.scheme isEqualToString:@"wss"] || [self.url.scheme isEqualToString:@"https"]){
@@ -227,17 +227,17 @@ static const size_t  JFRMaxFrameSize        = 32;
                                          (__bridge CFStringRef)headerWSProtocolName,
                                          (__bridge CFStringRef)protocols);
     }
-   
+
     CFHTTPMessageSetHeaderFieldValue(urlRequest,
                                      (__bridge CFStringRef)headerOriginName,
                                      (__bridge CFStringRef)[self origin]);
-    
+
     for(NSString *key in self.headers) {
         CFHTTPMessageSetHeaderFieldValue(urlRequest,
                                          (__bridge CFStringRef)key,
                                          (__bridge CFStringRef)self.headers[key]);
     }
-    
+
 #if defined(DEBUG)
     NSLog(@"urlRequest = \"%@\"", urlRequest);
 #endif
@@ -261,7 +261,7 @@ static const size_t  JFRMaxFrameSize        = 32;
     CFReadStreamRef readStream = NULL;
     CFWriteStreamRef writeStream = NULL;
     CFStreamCreatePairWithSocketToHost(NULL, (__bridge CFStringRef)self.url.host, [port intValue], &readStream, &writeStream);
-    
+
     self.inputStream = (__bridge_transfer NSInputStream *)readStream;
     self.inputStream.delegate = self;
     self.outputStream = (__bridge_transfer NSOutputStream *)writeStream;
@@ -285,6 +285,31 @@ static const size_t  JFRMaxFrameSize        = 32;
         [self.inputStream setProperty:settings forKey:key];
         [self.outputStream setProperty:settings forKey:key];
     }
+
+    if (self.identityRef) {
+        SecCertificateRef clientCertificate;
+        SecIdentityCopyCertificate(self.identityRef, &clientCertificate);
+        NSArray *clientCertificates = [[NSArray alloc] initWithObjects:(__bridge id)self.identityRef, (__bridge id)clientCertificate, nil];
+
+        NSString * peerName;
+        if (self.url.port) {
+            peerName =[NSString stringWithFormat:@"%@:%@", self.url.host, self.url.port];
+        } else {
+            peerName = [NSString stringWithFormat:@"%@", self.url.host];
+        }
+
+        NSDictionary *sslSettings = @{
+                (NSString *)kCFStreamSSLValidatesCertificateChain: @NO,
+                (NSString *)kCFStreamSSLPeerName: peerName,
+                (NSString*)kCFStreamSSLLevel: (NSString *)kCFStreamSocketSecurityLevelNegotiatedSSL,
+                (NSString*)kCFStreamPropertySocketSecurityLevel: (NSString *)kCFStreamSocketSecurityLevelNegotiatedSSL,
+                (NSString *)kCFStreamSSLCertificates: clientCertificates,
+                (NSString *)kCFStreamSSLIsServer: @NO,
+        };
+
+        [self.outputStream setProperty:sslSettings forKey:(__bridge id)kCFStreamPropertySSLSettings];
+    }
+
     self.isRunLoop = YES;
     [self.inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
     [self.outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
@@ -296,6 +321,46 @@ static const size_t  JFRMaxFrameSize        = 32;
         [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
     }
 }
+
+- (void) loadClientCertificate:(NSString *)clientCertificate password:(NSString *)password {
+    NSData *pkcs12data = [NSData dataWithContentsOfFile:clientCertificate];
+
+    if (!pkcs12data) {
+        NSLog(@"Unable to load client certificate <%@>", clientCertificate);
+        return;
+    }
+
+    const void *keys[] = {kSecImportExportPassphrase};
+    const void *values[] = {(__bridge const void *) (password)};
+    CFDictionaryRef optionsDictionary = NULL;
+
+    optionsDictionary = CFDictionaryCreate(
+            NULL, keys,
+            values, (password ? 1 : 0),
+            NULL, NULL);
+
+    CFArrayRef results;
+    OSStatus err = SecPKCS12Import((__bridge CFDataRef) (pkcs12data), optionsDictionary, &results);
+    if (err != noErr) {
+        NSLog(@"Could not import pkcs#12 file <%@>", clientCertificate);
+        return;
+    }
+
+    if (CFArrayGetCount(results) > 1) {
+        NSLog(@"Too many entreis in the the pkcs#12 file, not smart enough. <%@>", clientCertificate);
+        return;
+    }
+
+    CFDictionaryRef result = CFArrayGetValueAtIndex(results, 0);
+    self.identityRef = (SecIdentityRef) CFDictionaryGetValue(result, kSecImportItemIdentity);
+    CFRetain(self.identityRef);
+
+    if (!self.identityRef) {
+        NSLog(@"No identity in the pkcs#12 file <%@>", clientCertificate);
+        return;
+    }
+}
+
 /////////////////////////////////////////////////////////////////////////////
 
 #pragma mark - NSStreamDelegate
@@ -315,27 +380,27 @@ static const size_t  JFRMaxFrameSize        = 32;
     switch (eventCode) {
         case NSStreamEventNone:
             break;
-            
+
         case NSStreamEventOpenCompleted:
             break;
-            
+
         case NSStreamEventHasBytesAvailable:
             if(aStream == self.inputStream) {
                 [self processInputStream];
             }
             break;
-            
+
         case NSStreamEventHasSpaceAvailable:
             break;
-            
+
         case NSStreamEventErrorOccurred:
             [self disconnectStream:[aStream streamError]];
             break;
-            
+
         case NSStreamEventEndEncountered:
             [self disconnectStream:nil];
             break;
-            
+
         default:
             break;
     }
@@ -526,7 +591,7 @@ static const size_t  JFRMaxFrameSize        = 32;
                 }
                 offset += 2;
             }
-            
+
             if(payloadLen > 2) {
                 NSInteger len = payloadLen-2;
                 if(len > 0) {
@@ -614,14 +679,14 @@ static const size_t  JFRMaxFrameSize        = 32;
             [self.readStack addObject:response];
         }
         [self processResponse:response];
-        
+
         NSInteger step = (offset+len);
         NSInteger extra = bufferLen-step;
         if(extra > 0) {
             [self processExtra:(buffer+step) length:extra];
         }
     }
-    
+
 }
 /////////////////////////////////////////////////////////////////////////////
 - (void)processExtra:(uint8_t*)buffer length:(NSInteger)bufferLen {
@@ -677,7 +742,7 @@ static const size_t  JFRMaxFrameSize        = 32;
         self.writeQueue = [[NSOperationQueue alloc] init];
         self.writeQueue.maxConcurrentOperationCount = 1;
     }
-    
+
     __weak typeof(self) weakSelf = self;
     [self.writeQueue addOperationWithBlock:^{
         if(!weakSelf || !weakSelf.isConnected) {
@@ -707,7 +772,7 @@ static const size_t  JFRMaxFrameSize        = 32;
             uint8_t *mask_key = (buffer + offset);
             SecRandomCopyBytes(kSecRandomDefault, sizeof(uint32_t), (uint8_t *)mask_key);
             offset += sizeof(uint32_t);
-            
+
             for (size_t i = 0; i < dataLength; i++) {
                 buffer[offset] = bytes[i] ^ mask_key[i % sizeof(uint32_t)];
                 offset += 1;
