@@ -97,6 +97,13 @@
 - (void)addHeader:(nonnull NSString*)value forKey:(nonnull NSString*)key;
 
 /**
+ * Loads a pkcs12 client certificate
+ * @param clientCertificate The path to the *.p12 file
+ * @param password The password the decrypt the file
+ */
+- (void)loadClientCertificate:(NSString *)clientCertificate password:(NSString *)password;
+
+/**
  returns if the socket is conneted or not.
  */
 @property(nonatomic, assign, readonly)BOOL isConnected;

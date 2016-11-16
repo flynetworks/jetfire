@@ -68,6 +68,7 @@ typedef NS_ENUM(NSUInteger, JFRInternalErrorCode) {
 @property(nonatomic, assign)BOOL didDisconnect;
 @property(nonatomic, assign)BOOL certValidated;
 @property(nonatomic, nullable) SecIdentityRef identityRef;
+@property(nonatomic) CFArrayRef identityChain;
 @end
 
 //Constant Header Values.
@@ -287,9 +288,8 @@ static const size_t  JFRMaxFrameSize        = 32;
     }
 
     if (self.identityRef) {
-        SecCertificateRef clientCertificate;
-        SecIdentityCopyCertificate(self.identityRef, &clientCertificate);
-        NSArray *clientCertificates = [[NSArray alloc] initWithObjects:(__bridge id)self.identityRef, (__bridge id)clientCertificate, nil];
+        NSMutableArray *chain = ((__bridge NSMutableArray *) self.identityChain);
+        chain[0] = (__bridge id) self.identityRef;
 
         NSString * peerName;
         if (self.url.port) {
@@ -303,7 +303,7 @@ static const size_t  JFRMaxFrameSize        = 32;
                 (NSString *)kCFStreamSSLPeerName: peerName,
                 (NSString*)kCFStreamSSLLevel: (NSString *)kCFStreamSocketSecurityLevelNegotiatedSSL,
                 (NSString*)kCFStreamPropertySocketSecurityLevel: (NSString *)kCFStreamSocketSecurityLevelNegotiatedSSL,
-                (NSString *)kCFStreamSSLCertificates: clientCertificates,
+                (NSString *)kCFStreamSSLCertificates: chain,
                 (NSString *)kCFStreamSSLIsServer: @NO,
         };
 
@@ -359,6 +359,8 @@ static const size_t  JFRMaxFrameSize        = 32;
         NSLog(@"No identity in the pkcs#12 file <%@>", clientCertificate);
         return;
     }
+
+    self.identityChain = (CFArrayRef) CFDictionaryGetValue(result, kSecImportItemCertChain);
 }
 
 /////////////////////////////////////////////////////////////////////////////

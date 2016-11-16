@@ -15,6 +15,10 @@ Jetfire also has a Swift counter part here: [Starscream](https://github.com/dalt
 - TLS/WSS support.
 - Simple concise codebase at just a few hundred LOC.
 
+## Features add by my fork
+
+- Client-Side PKCS #12 Certificate 
+
 ## Example ##
 
 First thing is to import the header file. See the Installation instructions on how to add Jetfire to your project.
@@ -26,7 +30,11 @@ First thing is to import the header file. See the Installation instructions on h
 Once imported, you can open a connection to your WebSocket server. Note that `socket` is probably best as a property, so your delegate can stick around.
 
 ```objc
-self.socket = [[JFRWebSocket alloc] initWithURL:[NSURL URLWithString:@"ws://localhost:8080"] protocols:@[@"chat",@"superchat"]];
+NSString *appFolderPath = [[NSBundle mainBundle] resourcePath];
+NSString *pkcs12Path = [NSString stringWithFormat:@"%@/%@", appFolderPath, @"myCoolCertificate.p12"];
+
+self.socket = [[JFRWebSocket alloc] initWithURL:[NSURL URLWithString:@"wss://localhost:8080"] protocols:@[@"chat",@"superchat"]];
+[self.socket loadClientCertificate:pkcs12Path password:@"MY_COOL_PASSWORD"];
 self.socket.delegate = self;
 [self.socket connect];
 ```
