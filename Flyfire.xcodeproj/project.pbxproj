@@ -11,17 +11,17 @@
 		210EA8191D99645C00A323C8 /* JFRSecurity.m in Sources */ = {isa = PBXBuildFile; fileRef = 210EA8151D99645C00A323C8 /* JFRSecurity.m */; };
 		210EA81A1D99645C00A323C8 /* JFRWebSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 210EA8161D99645C00A323C8 /* JFRWebSocket.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		210EA81B1D99645C00A323C8 /* JFRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 210EA8171D99645C00A323C8 /* JFRWebSocket.m */; };
-		210EA81D1D99648E00A323C8 /* Jetfire.h in Headers */ = {isa = PBXBuildFile; fileRef = 210EA81C1D99648E00A323C8 /* Jetfire.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		210EA81D1D99648E00A323C8 /* Flyfire.h in Headers */ = {isa = PBXBuildFile; fileRef = 210EA81C1D99648E00A323C8 /* Flyfire.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		210EA8091D99642A00A323C8 /* Jetfire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Jetfire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		210EA80D1D99642A00A323C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		210EA8091D99642A00A323C8 /* Flyfire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Flyfire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		210EA80D1D99642A00A323C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.info; path = Info.plist; sourceTree = "<group>"; };
 		210EA8141D99645C00A323C8 /* JFRSecurity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFRSecurity.h; sourceTree = SOURCE_ROOT; };
 		210EA8151D99645C00A323C8 /* JFRSecurity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFRSecurity.m; sourceTree = SOURCE_ROOT; };
 		210EA8161D99645C00A323C8 /* JFRWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFRWebSocket.h; sourceTree = SOURCE_ROOT; };
 		210EA8171D99645C00A323C8 /* JFRWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFRWebSocket.m; sourceTree = SOURCE_ROOT; };
-		210EA81C1D99648E00A323C8 /* Jetfire.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Jetfire.h; sourceTree = SOURCE_ROOT; };
+		210EA81C1D99648E00A323C8 /* Flyfire.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flyfire.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,7 +38,7 @@
 		210EA7FF1D99642A00A323C8 = {
 			isa = PBXGroup;
 			children = (
-				210EA80B1D99642A00A323C8 /* Jetfire */,
+				210EA80B1D99642A00A323C8 /* Flyfire */,
 				210EA80A1D99642A00A323C8 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -46,22 +46,22 @@
 		210EA80A1D99642A00A323C8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				210EA8091D99642A00A323C8 /* Jetfire.framework */,
+				210EA8091D99642A00A323C8 /* Flyfire.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		210EA80B1D99642A00A323C8 /* Jetfire */ = {
+		210EA80B1D99642A00A323C8 /* Flyfire */ = {
 			isa = PBXGroup;
 			children = (
-				210EA81C1D99648E00A323C8 /* Jetfire.h */,
+				210EA81C1D99648E00A323C8 /* Flyfire.h */,
 				210EA8161D99645C00A323C8 /* JFRWebSocket.h */,
 				210EA8171D99645C00A323C8 /* JFRWebSocket.m */,
 				210EA8141D99645C00A323C8 /* JFRSecurity.h */,
 				210EA8151D99645C00A323C8 /* JFRSecurity.m */,
 				210EA80D1D99642A00A323C8 /* Info.plist */,
 			);
-			path = Jetfire;
+			path = Flyfire;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -72,7 +72,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				210EA81A1D99645C00A323C8 /* JFRWebSocket.h in Headers */,
-				210EA81D1D99648E00A323C8 /* Jetfire.h in Headers */,
+				210EA81D1D99648E00A323C8 /* Flyfire.h in Headers */,
 				210EA8181D99645C00A323C8 /* JFRSecurity.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -80,9 +80,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		210EA8081D99642A00A323C8 /* Jetfire-iOS */ = {
+		210EA8081D99642A00A323C8 /* Flyfire-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 210EA8111D99642A00A323C8 /* Build configuration list for PBXNativeTarget "Jetfire-iOS" */;
+			buildConfigurationList = 210EA8111D99642A00A323C8 /* Build configuration list for PBXNativeTarget "Flyfire-iOS" */;
 			buildPhases = (
 				210EA8041D99642A00A323C8 /* Sources */,
 				210EA8051D99642A00A323C8 /* Frameworks */,
@@ -93,9 +93,9 @@
 			);
 			dependencies = (
 			);
-			name = "Jetfire-iOS";
-			productName = Jetfire;
-			productReference = 210EA8091D99642A00A323C8 /* Jetfire.framework */;
+			name = "Flyfire-iOS";
+			productName = Flyfire;
+			productReference = 210EA8091D99642A00A323C8 /* Flyfire.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -113,7 +113,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 210EA8031D99642A00A323C8 /* Build configuration list for PBXProject "Jetfire" */;
+			buildConfigurationList = 210EA8031D99642A00A323C8 /* Build configuration list for PBXProject "Flyfire" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -125,7 +125,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				210EA8081D99642A00A323C8 /* Jetfire-iOS */,
+				210EA8081D99642A00A323C8 /* Flyfire-iOS */,
 			);
 		};
 /* End PBXProject section */
@@ -260,8 +260,8 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.vluxe.Jetfire;
-				PRODUCT_NAME = Jetfire;
+				PRODUCT_BUNDLE_IDENTIFIER = com.vluxe.Flyfire;
+				PRODUCT_NAME = Flyfire;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -277,8 +277,8 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.vluxe.Jetfire;
-				PRODUCT_NAME = Jetfire;
+				PRODUCT_BUNDLE_IDENTIFIER = com.vluxe.Flyfire;
+				PRODUCT_NAME = Flyfire;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -286,7 +286,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		210EA8031D99642A00A323C8 /* Build configuration list for PBXProject "Jetfire" */ = {
+		210EA8031D99642A00A323C8 /* Build configuration list for PBXProject "Flyfire" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				210EA80F1D99642A00A323C8 /* Debug */,
@@ -295,7 +295,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		210EA8111D99642A00A323C8 /* Build configuration list for PBXNativeTarget "Jetfire-iOS" */ = {
+		210EA8111D99642A00A323C8 /* Build configuration list for PBXNativeTarget "Flyfire-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				210EA8121D99642A00A323C8 /* Debug */,

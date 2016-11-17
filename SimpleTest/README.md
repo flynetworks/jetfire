@@ -1,6 +1,6 @@
 # Simple Test
 
-This is a very simple example on how to use Jetfire.
+This is a very simple example on how to use Flyfire.
 
 # Usage
 

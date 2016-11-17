@@ -1,11 +1,11 @@
-Jetfire
-=======
+Flyfire (Original by Dalton Cherry https://github.com/acmacalister/jetfire)
+===========================================================================
 
 WebSocket [RFC 6455](http://tools.ietf.org/html/rfc6455) client library for iOS and OSX.
 
-Jetfire is a conforming WebSocket ([RFC 6455](http://tools.ietf.org/html/rfc6455)) client library in Objective-C for iOS and OSX.
+Flyfire  is a conforming WebSocket ([RFC 6455](http://tools.ietf.org/html/rfc6455)) client library in Objective-C for iOS and OSX.
 
-Jetfire also has a Swift counter part here: [Starscream](https://github.com/daltoniam/starscream)
+Flyfire  also has a Swift counter part here: [Starscream](https://github.com/daltoniam/starscream)
 
 ## Features
 
@@ -21,7 +21,7 @@ Jetfire also has a Swift counter part here: [Starscream](https://github.com/dalt
 
 ## Example ##
 
-First thing is to import the header file. See the Installation instructions on how to add Jetfire to your project.
+First thing is to import the header file. See the Installation instructions on how to add Flyfire  to your project.
 
 ```objc
 #import "JFRWebSocket.h"
@@ -164,7 +164,7 @@ self.socket.selfSignedSSL = YES;
 
 ### SSL Pinning
 
-SSL Pinning is also supported in Jetfire. 
+SSL Pinning is also supported in Flyfire . 
 
 ```objc
 self.socket = [[JFRWebSocket alloc] initWithURL:[NSURL URLWithString:@"ws://localhost:8080"] protocols:@[@"chat",@"superchat"]];
@@ -190,11 +190,11 @@ Check out the SimpleTest project in the examples directory to see how to setup a
 
 ## Install ##
 
-The recommended approach for installing Jetfire is via the CocoaPods package manager (like most libraries).
+The recommended approach for installing Flyfire  is via the CocoaPods package manager (like most libraries).
 
 ## Requirements ##
 
-Jetfire requires at least iOS 5/OSX 10.7 or above.
+Flyfire  requires at least iOS 5/OSX 10.7 or above.
 
 ## Dependencies ##
 - Security.framework
@@ -207,7 +207,7 @@ Jetfire requires at least iOS 5/OSX 10.7 or above.
 
 ## License ##
 
-Jetfire is license under the Apache License.
+Flyfire  is license under the Apache License.
 
 ## Contact ##
 

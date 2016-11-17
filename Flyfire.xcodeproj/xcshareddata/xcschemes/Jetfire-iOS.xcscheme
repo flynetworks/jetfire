@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "210EA8081D99642A00A323C8"
-               BuildableName = "Jetfire.framework"
-               BlueprintName = "Jetfire-iOS"
-               ReferencedContainer = "container:Jetfire.xcodeproj">
+               BuildableName = "Flyfire.framework"
+               BlueprintName = "Flyfire-iOS"
+               ReferencedContainer = "container:Flyfire.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,9 +46,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "210EA8081D99642A00A323C8"
-            BuildableName = "Jetfire.framework"
-            BlueprintName = "Jetfire-iOS"
-            ReferencedContainer = "container:Jetfire.xcodeproj">
+            BuildableName = "Flyfire.framework"
+            BlueprintName = "Flyfire-iOS"
+            ReferencedContainer = "container:Flyfire.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -64,9 +64,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "210EA8081D99642A00A323C8"
-            BuildableName = "Jetfire.framework"
-            BlueprintName = "Jetfire-iOS"
-            ReferencedContainer = "container:Jetfire.xcodeproj">
+            BuildableName = "Flyfire.framework"
+            BlueprintName = "Flyfire-iOS"
+            ReferencedContainer = "container:Flyfire.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>
