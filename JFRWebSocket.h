@@ -101,7 +101,7 @@
  * @param clientCertificate The path to the *.p12 file
  * @param password The password the decrypt the file
  */
-- (void)loadClientCertificate:(NSString *)clientCertificate password:(NSString *)password;
+- (void)loadClientCertificate:(nonnull NSString *)clientCertificate password:(nonnull NSString *)password;
 
 /**
  returns if the socket is conneted or not.
